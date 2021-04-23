@@ -2,6 +2,7 @@ package tanks.game;
 
 import tanks.IO.Input;
 import tanks.display.Display;
+import tanks.graphics.TextureAtlas;
 import tanks.utils.Time;
 
 import java.awt.*;
@@ -25,11 +26,14 @@ public class Game implements Runnable {
     public static final float UPDATE_INTERVAL = Time.SECOND / UPDATE_RATE; // интервал определенного на обновления UPDATE
     public static final long IDLE_TIME = 1; // каждый фред создаваемый давал на обработку других процесссов
 
+    public static final String ATLAS_FILE_NAME = "texture_atlas.png";
+
     // поля  игры
     private boolean running;
     private Thread gameThread;
     private Graphics2D graphics2D;
     private Input input;
+    private TextureAtlas atlas;
 
     // temp
     float x = 350;
@@ -46,6 +50,7 @@ public class Game implements Runnable {
         graphics2D = Display.getGraphics2D();
         input = new Input();
         Display.addInputListener(input);
+        atlas = new TextureAtlas(ATLAS_FILE_NAME);
     }
 
     /*==================================================*/
@@ -94,7 +99,8 @@ public class Game implements Runnable {
     private void render() {
         Display.clear();
         graphics2D.setColor(Color.WHITE);
-        graphics2D.fillOval((int) (x + (Math.sin(delta) * 200)), (int) (y), (int) (rad * 2), (int) (rad * 2));
+        graphics2D.drawImage(atlas.cut(0, 0, 32, 32), 300, 300, null);
+//        graphics2D.fillOval((int) (x + (Math.sin(delta) * 200)), (int) (y), (int) (rad * 2), (int) (rad * 2));
         Display.swapBuffers();
     }
 
