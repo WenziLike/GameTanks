@@ -1,5 +1,7 @@
 package tanks.display;
 
+import tanks.IO.Input;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -16,11 +18,11 @@ public abstract class Display {
 
     //buffer накладное  изображение
     private static BufferedImage buffer;
-    private static int[] bufferData;
+    private static int[] bufferData; // массив  со всей  информациией  избражения
     private static Graphics bufferGraphics;
-    private static int clearColor;
+    private static int clearColor; // это какой то цвет для очистки ImageBuffer
 
-    private static BufferStrategy bufferStrategy;
+    private static BufferStrategy bufferStrategy; // имплиминтировать бафферы
 
     public static void create(int width, int height, String title, int _clearColor, int numBuffers) { // метод создания
         if (created) // проверка на создан клас или нет
@@ -40,14 +42,14 @@ public abstract class Display {
         window.setLocationRelativeTo(null); // задает  позицию окна от компонента
         window.setVisible(true);  // видимость окна
 
-        buffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);// создаем IMG
+        buffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);// создаем IMG будет хранить в  RGBA
         bufferData = ((DataBufferInt) buffer.getRaster().getDataBuffer()).getData(); // дастаем информацию  массива вернет
         bufferGraphics = buffer.getGraphics();
         ((Graphics2D) bufferGraphics).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON); // сглаживание на обьект
         clearColor = _clearColor; //инициализировали свойтво
 
-        content.createBufferStrategy(numBuffers);
-        bufferStrategy = content.getBufferStrategy();
+        content.createBufferStrategy(numBuffers); // кол бафферов
+        bufferStrategy = content.getBufferStrategy(); // приравневаем
 
         created = true;
 
@@ -58,9 +60,9 @@ public abstract class Display {
     }
 
     public static void swapBuffers() {
-        Graphics g = bufferStrategy.getDrawGraphics(); // вернет грический обьект
+        Graphics g = bufferStrategy.getDrawGraphics(); // вернет грический обьект из Canvas
         g.drawImage(buffer, 0, 0, null); // рисуем по каким координатам высоты  и ширины
-        bufferStrategy.show();
+        bufferStrategy.show(); // показываем картинку
     }
 
     public static Graphics2D getGraphics2D() { // возвращает обект с графики
@@ -76,6 +78,10 @@ public abstract class Display {
 
     public static void setTitle(String title) {
         window.setTitle(title);
+    }
+
+    public static void addInputListener(Input inputListener) {
+        window.add(inputListener);
     }
 
 }

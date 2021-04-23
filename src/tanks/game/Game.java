@@ -1,8 +1,11 @@
 package tanks.game;
 
+import tanks.IO.Input;
 import tanks.display.Display;
 import tanks.utils.Time;
+
 import java.awt.*;
+import java.awt.event.KeyEvent;
 
 public class Game implements Runnable {
     // паралельный  компонент для создания  нового процесса
@@ -18,27 +21,31 @@ public class Game implements Runnable {
 
 
     // дополнительные
-    public static final float UPDATE_RATE = 20.0f; //значения  для  обновления
+    public static final float UPDATE_RATE = 60.0f; //значения  для  обновления
     public static final float UPDATE_INTERVAL = Time.SECOND / UPDATE_RATE; // интервал определенного на обновления UPDATE
     public static final long IDLE_TIME = 1; // каждый фред создаваемый давал на обработку других процесссов
 
     // поля  игры
     private boolean running;
     private Thread gameThread;
-
     private Graphics2D graphics2D;
+    private Input input;
 
     // temp
     float x = 350;
     float y = 250;
     float delta = 0;
     float rad = 50;
+    float speed = 3;
+
 
     //temp
     public Game() {
         running = false;
         Display.create(WIDTH, HEIGHT, TITLE, CLEAR_COLOR, NUM_BUFFERS);
         graphics2D = Display.getGraphics2D();
+        input = new Input();
+        Display.addInputListener(input);
     }
 
     /*==================================================*/
@@ -72,7 +79,14 @@ public class Game implements Runnable {
     /*==================================================*/
     // считает все расчеты
     private void update() {
-        delta += 0.02f;
+        if (input.getKey(KeyEvent.VK_UP))
+            y -= speed;
+        if (input.getKey(KeyEvent.VK_DOWN))
+            y += speed;
+        if (input.getKey(KeyEvent.VK_LEFT))
+            x -= speed;
+        if (input.getKey(KeyEvent.VK_RIGHT))
+            x += speed;
     }
 
     /*==================================================*/
