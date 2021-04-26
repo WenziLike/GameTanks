@@ -1,6 +1,5 @@
 package tanks.game;
 
-import org.w3c.dom.Entity;
 import tanks.IO.Input;
 import tanks.graphics.Sprite;
 import tanks.graphics.SpriteSheet;
@@ -10,6 +9,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Player extends Entity {
 
@@ -27,8 +27,8 @@ public class Player extends Entity {
         Heading(int x, int y, int h, int w) {
             this.x = x;
             this.y = y;
-            this.h = h;
             this.w = w;
+            this.h = h;
         }
 
         protected BufferedImage texture(TextureAtlas atlas) {
@@ -40,7 +40,6 @@ public class Player extends Entity {
     private Map<Heading, Sprite> spriteMap;
     private float scale;
     private float speed;
-
 
     public Player(float x, float y, float scale, float speed, TextureAtlas atlas) {
         super(EntityType.Player, x, y);
@@ -55,9 +54,12 @@ public class Player extends Entity {
             Sprite sprite = new Sprite(sheet, scale);
             spriteMap.put(h, sprite);
         }
+
     }
 
+    @Override
     public void update(Input input) {
+
         float newX = x;
         float newY = y;
 
@@ -90,10 +92,12 @@ public class Player extends Entity {
         x = newX;
         y = newY;
 
-
     }
 
+    @Override
     public void render(Graphics2D g) {
         spriteMap.get(heading).render(g, x, y);
     }
+
 }
+

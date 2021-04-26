@@ -17,7 +17,7 @@ public class Game implements Runnable {
     public static final int HEIGHT = 600;
     public static final String TITLE = "Tanks";
     public static final int CLEAR_COLOR = 0xff000000;
-    public static final int NUM_BUFFERS = 3;
+    public static final int NUM_BUFFERS = 2;
 
 
     // дополнительные
@@ -42,7 +42,7 @@ public class Game implements Runnable {
         input = new Input();
         Display.addInputListener(input);
         atlas = new TextureAtlas(ATLAS_FILE_NAME);
-        player = new Player(300, 300, 2, 3, atlas);
+        player = new Player(300, 300, 2, 1, atlas);
     }
 
     /*==================================================*/
