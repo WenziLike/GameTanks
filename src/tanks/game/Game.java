@@ -2,13 +2,10 @@ package tanks.game;
 
 import tanks.IO.Input;
 import tanks.display.Display;
-import tanks.graphics.Sprite;
-import tanks.graphics.SpriteSheet;
 import tanks.graphics.TextureAtlas;
 import tanks.utils.Time;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
 
 public class Game implements Runnable {
     // паралельный  компонент для создания  нового процесса
@@ -36,18 +33,8 @@ public class Game implements Runnable {
     private Graphics2D graphics2D;
     private Input input;
     private TextureAtlas atlas;
-    private SpriteSheet sheet;
-    private Sprite sprite;
+    private Player player;
 
-    // temp
-    float x = 350;
-    float y = 250;
-    float delta = 0;
-    float rad = 50;
-    float speed = 3;
-
-
-    //temp
     public Game() {
         running = false;
         Display.create(WIDTH, HEIGHT, TITLE, CLEAR_COLOR, NUM_BUFFERS);
@@ -55,8 +42,7 @@ public class Game implements Runnable {
         input = new Input();
         Display.addInputListener(input);
         atlas = new TextureAtlas(ATLAS_FILE_NAME);
-        sheet = new SpriteSheet(atlas.cut(8 * 16, 5 * 16, 16 * 2, 16), 2, 16);
-        sprite = new Sprite(sheet, 1);
+        player = new Player(300, 300, 2, 3, atlas);
     }
 
     /*==================================================*/
@@ -90,21 +76,14 @@ public class Game implements Runnable {
     /*==================================================*/
     // считает все расчеты
     private void update() {
-        if (input.getKey(KeyEvent.VK_UP))
-            y -= speed;
-        if (input.getKey(KeyEvent.VK_DOWN))
-            y += speed;
-        if (input.getKey(KeyEvent.VK_LEFT))
-            x -= speed;
-        if (input.getKey(KeyEvent.VK_RIGHT))
-            x += speed;
+        player.update(input);
     }
 
     /*==================================================*/
     // после подсчета  рендерим обьектов танков пуль выводим отрисовку
     private void render() {
         Display.clear();
-        sprite.render(graphics2D, x, y);
+        player.render(graphics2D);
         Display.swapBuffers();
     }
 
