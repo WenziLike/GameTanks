@@ -2,6 +2,7 @@ package tanks.game;
 
 import tanks.IO.Input;
 import tanks.display.Display;
+import tanks.game.level.Level;
 import tanks.graphics.TextureAtlas;
 import tanks.utils.Time;
 
@@ -34,6 +35,7 @@ public class Game implements Runnable {
     private Input input;
     private TextureAtlas atlas;
     private Player player;
+    private Level lvl;
 
     public Game() {
         running = false;
@@ -43,6 +45,7 @@ public class Game implements Runnable {
         Display.addInputListener(input);
         atlas = new TextureAtlas(ATLAS_FILE_NAME);
         player = new Player(300, 300, 2, 1, atlas);
+        lvl = new Level(atlas);
     }
 
     /*==================================================*/
@@ -77,12 +80,14 @@ public class Game implements Runnable {
     // считает все расчеты
     private void update() {
         player.update(input);
+        lvl.update();
     }
 
     /*==================================================*/
     // после подсчета  рендерим обьектов танков пуль выводим отрисовку
     private void render() {
         Display.clear();
+        lvl.render(graphics2D);
         player.render(graphics2D);
         Display.swapBuffers();
     }
